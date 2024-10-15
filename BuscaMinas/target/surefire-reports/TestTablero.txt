@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+Test set: TestTablero
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.060 s <<< FAILURE! -- in TestTablero
+TestTablero.TestJuegoGanador -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "rodrocompany.model.celda.getCelda()" because "this.tablero[i][j]" is null
+	at rodrocompany.model.Tablero.getCelda(Tablero.java:36)
+	at TestTablero.TestJuegoGanador(TestTablero.java:96)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+TestTablero.TestRevelarconMina -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "rodrocompany.model.celda.getCelda()" because "this.tablero[i][j]" is null
+	at rodrocompany.model.Tablero.getCelda(Tablero.java:36)
+	at TestTablero.TestRevelarconMina(TestTablero.java:75)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+TestTablero.TestRevelarCelda -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "rodrocompany.model.celda.getCelda()" because "this.tablero[i][j]" is null
+	at rodrocompany.model.Tablero.getCelda(Tablero.java:36)
+	at TestTablero.TestRevelarCelda(TestTablero.java:64)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+TestTablero.TestMinasAlrededor -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "rodrocompany.model.celda.getCelda()" because "this.tablero[i][j]" is null
+	at rodrocompany.model.Tablero.getCelda(Tablero.java:36)
+	at TestTablero.TestMinasAlrededor(TestTablero.java:83)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
