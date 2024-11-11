@@ -1,32 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package view;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JMenuItem;
 
-/**
- *
- * @author win
- */
+
 public class FrameTablero extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrameTablero
-     */
-    int nroFilas;
-    int nroColumnas;
+
+
+
+    private int nroFilas;
+    private int nroColumnas;
 
     JButton[][] botones;
+    JButton bandera;
 
     public FrameTablero(int filas, int columnas) {
         nroFilas = filas;
@@ -34,81 +25,122 @@ public class FrameTablero extends javax.swing.JFrame {
         botones = new JButton[nroFilas][nroColumnas];
         initComponents();
         if(filas == 8 && columnas ==10){
-            setSize(500,400);
+            setSize(505,420);
             inicializandoBotones(40,40);
         }
-        if(filas == 15 && columnas ==18){
-            setSize(690, 600);
+        if(filas == 14 && columnas ==18){
+            setSize(745, 600);
             inicializandoBotones(35,35);
         }
         if(filas == 20 && columnas ==24){
-            setSize(870,689);
+            setSize(850, 709);
             inicializandoBotones(30,30);
         }
         getContentPane().setBackground(new Color(230, 230, 230));
         //inicializandoBotones();
 
         setLocationRelativeTo(null);
+        revalidate();
+        repaint();
+    }
+    
+    public void reset(int filas, int columnas) {
+        nroFilas = filas;
+        nroColumnas = columnas;
+        botones = new JButton[nroFilas][nroColumnas];
+        initComponents();
+        if (filas == 8 && columnas == 10) {
+            setSize(505,420);
+            inicializandoBotones(40, 40);
+        }
+        if (filas == 14 && columnas == 18) {
+            setSize(745, 600);
+            inicializandoBotones(35, 35);
+        }
+        if (filas == 20 && columnas == 24) {
+            setSize(850, 709);
+            inicializandoBotones(30, 30);
+        }
+        getContentPane().setBackground(new Color(230, 230, 230));
+        //inicializandoBotones();
+
+        setLocationRelativeTo(null);
+        revalidate();
+        repaint();
+
     }
 
-    private void inicializandoBotones(int ancho, int alto) {
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/celdas1.png"));
-        Image resizedImage = originalIcon.getImage().getScaledInstance(ancho+15, alto+15, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+    public  JButton[][] getBotones() {
+        return botones;
+    }
+    
+    public JButton getboton(int x,int y){
+        return botones[x][y];
+    }
+
+    public void inicializandoBotones(int ancho, int alto) {
         int XReferencia = 20;
         int yReferencia = 20;
         int anchoControl = ancho;
         int altoControl = alto;
+        bandera = new JButton();
         for (int i = 0; i < nroFilas; i++) {
             for (int j = 0; j < nroColumnas; j++) {
                 botones[i][j] = new JButton();
                 botones[i][j].setName(i + "," + j);
                 botones[i][j].setBorder(null);
-                botones[i][j].setIcon(resizedIcon);
+                botones[i][j].setBackground(new Color(211, 211, 211));
                 if (i == 0 && j == 0) {
                     botones[i][j].setBounds(XReferencia, yReferencia, anchoControl, altoControl);
                 } else {
                     if (i == 0 && j != 0) {
                         botones[i][j].setBounds(botones[i][j - 1].getX() + botones[i][j - 1].getWidth(), yReferencia, anchoControl, altoControl);
+                        bandera.setBounds(botones[i][j - 1].getX() + 100, yReferencia, anchoControl, altoControl);
+                        bandera.setBorder(null);
+                        bandera.setBackground(new Color(230, 230, 230));
+                        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Bandera01.png"));
+                        Image resizedImage = originalIcon.getImage().getScaledInstance(botones[0][0].getWidth(), botones[0][0].getHeight(), Image.SCALE_SMOOTH);
+                        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+                        bandera.setIcon(resizedIcon);
+                        getContentPane().add(bandera);
                     } else {
                         botones[i][j].setBounds(botones[i - 1][j].getX(), botones[i - 1][j].getY() + botones[i - 1][j].getHeight(), anchoControl, altoControl);
                     }
                 }
-                botones[i][j].addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        btnClick(e);
-                    }
-                });
+                
                 getContentPane().add(botones[i][j]);
             }
 
         }
+
 }
     
-public void btnClick(ActionEvent e){
-    JButton btn = (JButton) e.getSource();
-    String[] coordenada = btn.getName().split(",");
-    int posFila = Integer.parseInt(coordenada[0]);
-    int posColumna = Integer.parseInt(coordenada[1]);
 
 
-    JOptionPane.showMessageDialog(rootPane, posFila + "," + posColumna);
-    cambiarImagen(btn);
-}
+    public JMenuItem getnivelFacil() {
+        return nivelFacil;
+    }
 
-    private void cambiarImagen(JButton btn) {
-        ImageIcon original = new ImageIcon(getClass().getResource("/celda02.png"));
-        Image resized = original.getImage().getScaledInstance(btn.getWidth() + 15, btn.getHeight() + 15, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resized);
-        btn.setIcon(resizedIcon);
+    public JMenuItem getnivelMedio() {
+        return nivelMedio;
+    }
 
+    public JMenuItem getnivelDificil() {
+        return nivelDificil;
     }
     
-   public JPanel getTablero(){
-       JPanel panel = (JPanel) getContentPane();
-       return panel;
-   }
+    public void setNroFilas(int filas){
+        nroFilas = filas;
+    }
+    
+        public void setNroColumnas(int columnas){
+        nroColumnas = columnas;
+    }
+        
+    public JButton getBandera(){
+        return bandera;
+    }
+
 /**
  * This method is called from within the constructor to initialize the form.
  * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,8 +150,39 @@ public void btnClick(ActionEvent e){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        Menu = new javax.swing.JMenu();
+        nivelFacil = new javax.swing.JMenuItem();
+        nivelMedio = new javax.swing.JMenuItem();
+        nivelDificil = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 204, 51));
+
+        Menu.setText("Juego");
+
+        nivelFacil.setText("Facil");
+        Menu.add(nivelFacil);
+
+        nivelMedio.setText("Medio");
+        nivelMedio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nivelMedioActionPerformed(evt);
+            }
+        });
+        Menu.add(nivelMedio);
+
+        nivelDificil.setText("Dificil");
+        nivelDificil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nivelDificilActionPerformed(evt);
+            }
+        });
+        Menu.add(nivelDificil);
+
+        jMenuBar1.add(Menu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,11 +192,19 @@ public void btnClick(ActionEvent e){
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 996, Short.MAX_VALUE)
+            .addGap(0, 973, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void nivelMedioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nivelMedioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nivelMedioActionPerformed
+
+    private void nivelDificilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nivelDificilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nivelDificilActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,12 +250,19 @@ public void btnClick(ActionEvent e){
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 public void run() {
-                new FrameTablero(8, 10).setVisible(true);
+                //new FrameTablero(int fila, int columna).setVisible(true);
 
             }
         });
     }
 
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Menu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem nivelDificil;
+    private javax.swing.JMenuItem nivelFacil;
+    private javax.swing.JMenuItem nivelMedio;
     // End of variables declaration//GEN-END:variables
 }

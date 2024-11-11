@@ -1,10 +1,14 @@
 rodrocompany\model\celda.class
 rodrocompany\model\Modelo.class
+controller\controller$4.class
 rodrocompany\model\BuscaMinas.class
+view\FrameTablero$3.class
 view\FrameTablero$2.class
-view\FrameMenu$1.class
 view\FrameTablero.class
+controller\controller$5.class
+controller\controller$1.class
+controller\controller$2.class
 view\FrameTablero$1.class
 rodrocompany\model\Tablero.class
 controller\controller.class
-view\FrameMenu.class
+controller\controller$3.class

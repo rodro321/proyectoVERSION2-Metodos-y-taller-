@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package rodrocompany.model;
 
-/**
- *
- * @author win
- */
+
 public class Tablero {
 
     private celda tablero[][];
@@ -137,5 +131,11 @@ public class Tablero {
         }
         return res;
     }
-
+    public int getSizeX(){
+        return tablero.length;
+    }
+    
+    public int getSizey(){
+        return tablero[0].length;
+    }
 }

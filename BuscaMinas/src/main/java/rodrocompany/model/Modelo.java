@@ -18,18 +18,31 @@ public class Modelo {
                 20x24 99 minas 
      */
     Scanner scan = new Scanner(System.in);
-    public char[][] tablero;
-    public Tablero board;
-    public int cantMinas;
-    public long time;
-    public int marcadores;
-    public boolean end;
-    public String[] posMinas;
+    private char[][] tablero;
+    private Tablero board;
+    private int cantMinas;
+    private long time;
+    private int marcadores;
+    private boolean end;
+    private String[] posMinas;
     private boolean primeraJugada = true;
 
     public Modelo() {
         cantMinas = marcadores = 0;
         end = false;
+        //iniciarJuego();
+    }
+    
+    public void reset(int nivel){
+        tablero =  null;
+        board = null;
+        cantMinas = 0;
+        time = 0;
+        marcadores = 0;
+        end = false;
+        posMinas = null;
+        primeraJugada = true;
+
     }
 
     public void inicializar(int x, int y, int cantMinas) {
@@ -40,7 +53,18 @@ public class Modelo {
         posMinas = new String[cantMinas];
         end = false;
     }
-
+    
+    public String [] getposMinas(){
+        return posMinas;
+    }
+    
+    public Tablero getBoard(){
+        return board;
+    }
+    
+    public boolean getEnd(){
+        return end;
+    }
     private void iniciarTablero() {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
@@ -49,10 +73,8 @@ public class Modelo {
         }
     }
 
-    public void selectNivel() {
-        System.out.println("Selecionar dificultad: ");
-        System.out.println("1. FACIL \n2. MEDIO \n3. DIFICIL");
-        int dificultad = scan.nextInt();
+    public void selectNivel(int dificultad) {
+
 
         switch (dificultad) {
             case 1:
@@ -112,7 +134,7 @@ public class Modelo {
                 if (!aux.tieneMina() && (x != i && y != j)) {
                     aux.setMina(true);
                     posMinas[Minas - 1] = (i + "," + j);
-                    //tablero[i][j] = 'B'; //era para controlar que se coloque bomba
+                    tablero[i][j] = 'B'; //era para controlar que se coloque bomba
                     Minas--;
                 }
             }
@@ -127,93 +149,53 @@ public class Modelo {
 
     public void revelar(int i, int j) {
         board.revelar(i, j, board);
-        for (int x = 0; x < tablero.length; x++) {
-            for (int y = 0; y < tablero[x].length; y++) {
-                if (board.getCelda(x, y).esVisible()) {
-                    int minaCerca = board.getCelda(x, y).getMinaCerca();
-                    if (minaCerca > 0 && tablero[x][y] != 'M') {
-                        char auxChar = (char) (minaCerca + '0');
-                        tablero[x][y] = auxChar;
-                    } else {
-                        if (board.getCelda(x, y).esVisible() && tablero[x][y] != 'M') {
-                            tablero[x][y] = ' ';
-                        }
-                    }
-
-                }
-
-            }
-        }
+        
     }
 
-    public void iniciarJuego() {
-        selectNivel();
-        long ini = System.currentTimeMillis() / 1000;
-        while (!end) {
-            mostrar();
-            recogerDatos(ini);
 
-        }
-    }
 
-    private void recogerDatos(long ini) {
-        int i = -1;
-        int j = -1;
-        if (primeraJugada) {
-            System.out.println("Coloque su primera Jugada");
-            System.out.println("Selecciona posición en i: ");
-             i = scan.nextInt();
-            System.out.println("Selecciona posición en j: ");
-             j = scan.nextInt();
-            generarMinas(i, j);
-            primeraJugada = false;
-            MinasCercas();
-            end = terminarJuego(i, j, ini);
-        }else{
-            System.out.println("Revelar:R | marcar: M | Desmarcar: D");
-            String sele = scan.nextLine();
-            if (sele.equalsIgnoreCase("R")) {
-                System.out.println("selecion posicion en i: ");
-                i = scan.nextInt();
-                System.out.println("selecion posicion en j: ");
-                j = scan.nextInt();
-                //revelar(i, j);
+    public void seleccionarCasilla(int i,int j, boolean marcar, boolean desmarcar, long ini) {
+        if (!end) {
+            if (primeraJugada) {
+                generarMinas(i, j);
+                primeraJugada = false;
+                MinasCercas();
                 end = terminarJuego(i, j, ini);
+            } else {
+                if (marcar == false && desmarcar == false && !board.getCelda(i, j).tieneBandera()) {
+                    //revelar(i,j);
+                    end = terminarJuego(i, j, ini);
 
-            }else{
-                if (sele.equalsIgnoreCase("M")) {
-                    System.out.println("selecion posicion en i: ");
-                    i = scan.nextInt();
-                    System.out.println("selecion posicion en j: ");
-                    j = scan.nextInt();
-                    if (marcadores != 0) {
-                        tablero[i][j] = 'M';
-                        marcadores--;
-                        board.getCelda(i, j).Marcar();
-                    }
-                    if (marcadores == 0) {
-                        end = terminarJuego(i, j, ini);
-                    }
+                } else {
+                    if (marcar && !board.getCelda(i, j).tieneBandera()) {
 
-                }else{
-                    if (sele.equalsIgnoreCase("D")) {
-                        System.out.println("selecion posicion en i: ");
-                        i = scan.nextInt();
-                        System.out.println("selecion posicion en j: ");
-                        j = scan.nextInt();
-                        if (tablero[i][j] == 'M') {
-                            tablero[i][j] = '*';
-                            marcadores = marcadores + 1;
-                            board.getCelda(i, j).Desmarcar();
+                        if (marcadores != 0) {
+                            marcadores--;
+                            board.getCelda(i, j).Marcar();
+                            tablero[i][j]='M';
                         }
+                        if (marcadores == 0) {
+                            end = terminarJuego(i, j, ini);
+                        }
+
+                    } else {
+
+                        if (board.getCelda(i, j).tieneBandera()) {
+                            board.getCelda(i, j).Desmarcar();
+                            marcadores = marcadores + 1;
+                            tablero[i][j]='*';
+                        }
+
                     }
                 }
             }
-        }
 
-        if (i != -1 && j != -1) {
-            revelar(i, j);
+            if (i != -1 && j != -1) {
+                revelar(i, j);
+                mostrar();
+            }
         }
+        
 
     }
 
@@ -224,33 +206,51 @@ public class Modelo {
                 long fin = System.currentTimeMillis() / 1000;
                 time = fin - ini;
                 System.out.println("WIN");
-                JOptionPane.showMessageDialog(null, "Game Over \nScore: " + time);
+                JOptionPane.showMessageDialog(null, "Win \nTime: " + time);
 
             }
         } else {
+
             if (board.getCelda(i, j).tieneMina()) {
                 end = true;
                 long fin = System.currentTimeMillis() / 1000;
                 time = fin - ini;
-                marcarMinas(posMinas);
+                //marcarMinas(posMinas);
                 System.out.println("GAME OVER");
-                JOptionPane.showMessageDialog(null, "Game Over \nScore: " + time);
+                JOptionPane.showMessageDialog(null, "Game Over \nTime: " + time);
+            } else {
+                if (partidaGanada()) {
+                    end = true;
+                    long fin = System.currentTimeMillis() / 1000;
+                    time = fin - ini;
+                    System.out.println("WIN");
+                    JOptionPane.showMessageDialog(null, "Win \nTime: " + time);
+                }
             }
+
         }
 
         return end;
     }
 
-    private void marcarMinas(String[] posMina) {
-        for (int i = 0; i < posMina.length; i++) {
-            String[] posiciones = posMina[i].split(",");
-            int x = Integer.parseInt(posiciones[0]);
-            int y = Integer.parseInt(posiciones[1]);
-            board.getCelda(x, y).revelar();
-            tablero[x][y] = 'B';
-            mostrar();
+    public boolean partidaGanada() {
+    int casillasAbiertas = 0;
+    boolean ganada = false;
+    for (int i = 0; i < board.getSizeX(); i++) {
+        for (int j = 0; j < board.getSizey(); j++) {
+            if (board.getCelda(i, j).esVisible() && !board.getCelda(i, j).tieneMina()) {
+                casillasAbiertas++;
+            }
         }
     }
+    if (casillasAbiertas >= (board.getSizeX() * board.getSizey()) - cantMinas) {
+        ganada = true;
+    }
+    return ganada;
+}
+
+
+   
 
     public boolean VerfificarMarcadores() {
         return verificarMarcadores(posMinas);
@@ -262,7 +262,7 @@ public class Modelo {
             String[] posiciones = posMina[i].split(",");
             int x = Integer.parseInt(posiciones[0]);
             int y = Integer.parseInt(posiciones[1]);
-            if (tablero[x][y] != 'M' || !board.getCelda(x, y).tieneMina()) {
+            if (!board.getCelda(i, y).tieneBandera() || !board.getCelda(x, y).tieneMina()) {
                 return false;  // Falta una mina sin marcar o hay un error en una posición marcada
             }
         }
